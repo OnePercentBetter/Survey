@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { QuestionForm } from '../components/QuestionForm';
 import { Survey, Question, Response, Answer } from '../types';
+import { api } from '../utils/api';
 
 export function SurveyDetail() {
   const { id } = useParams();
@@ -13,8 +14,8 @@ export function SurveyDetail() {
   const fetchData = async () => {
     try {
       const [surveyRes, responsesRes] = await Promise.all([
-        fetch(`/api/surveys/${id}`),
-        fetch(`/api/surveys/${id}/responses`)
+        api.get(`/api/surveys/${id}`),
+        api.get(`/api/surveys/${id}/responses`)
       ]);
 
       if (!surveyRes.ok || !responsesRes.ok) {
@@ -60,15 +61,6 @@ export function SurveyDetail() {
               const answersForQuestion = responses.filter(r => 
                 r.answers?.some(a => a.questionId === question.id)
               );
-              
-              console.log('Question:', question);
-              console.log('Options:', question.options);
-              console.log('Question with options:', {
-                questionType: question.questionType,
-                options: question.options,
-                hasOptions: question.options && question.options.length > 0
-              });
-              
               return (
                 <div key={question.id} className="card bg-base-200 p-4">
                   <h3 className="text-xl font-semibold">
