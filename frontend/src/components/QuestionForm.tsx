@@ -26,7 +26,7 @@ export function QuestionForm({ surveyId, onQuestionAdded }: { surveyId: string, 
     try {
       const response = await api.post(`/api/surveys/${surveyId}/questions`, {
         questionText,
-        questionType,
+        questionType,   
         options: questionType === 'multiple_choice' ? options : []
       });
 
